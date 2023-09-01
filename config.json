@@ -1,9 +1,9 @@
 {
-  "auth_email": "CFautoip@gmail.com",   // Cloudflare账户的邮箱地址
-  "auth_key": "xxxxxxxxxxxxxxxxxxxxxxxxx",   // Cloudflare账户的API密钥,API获取地址：https://dash.cloudflare.com/profile/api-tokens
-  "zone_name": "google.com",   // 需要更改的根域名
-  "record_name": "bgp",   // DNS记录的名称前缀
-  "set_url_config": 1,   // 设置用于获取IP地址的网站配置（1表示使用hostmonit，2表示使用fastwork）
-  "record_count": 0,   // 要更新的DNS记录的数量，如果为0则只更新或创建前缀记录
-  "record_type": "A"   // DNS记录的类型
+  "auth_email": "CFautoip@gmail.com",   # Cloudflare账户的邮箱地址
+  "auth_key": "xxxxxxxxxxxxxxxxxxxxxxxxx",   # Cloudflare账户的API密钥,API获取地址：https://dash.cloudflare.com/profile/api-tokens
+  "zone_name": "google.com",   # 需要更改的根域名
+  "record_name": "bgp",   # DNS记录的名称前缀
+  "set_url_config": 1,   # 设置用于获取IP地址的网站配置（1表示使用hostmonit，2表示使用fastwork）
+  "record_count": 0,   # 要更新的DNS记录的数量，如果为0则只更新或创建前缀记录
+  "record_type": "A"   # DNS记录的类型
 }
