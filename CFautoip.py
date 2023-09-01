@@ -87,7 +87,7 @@ if __name__ == '__main__':
 
     public_ip = get_public_ip()
     print(f"你的IP地址是：{public_ip}")
-    print("欢迎关注telegram：https://t.me/+vTwBHA9RbtMwYzA9")
+    print("欢迎关注telegram：https://t.me/notetoday")
 
     response = requests.get(f"https://api.cloudflare.com/client/v4/zones?name={zone_name}", headers={
         "X-Auth-Email": auth_email,
