@@ -4,7 +4,7 @@ import requests
 from lxml import etree
 
 # Read configuration from a local file
-with open("config.json", "r", encoding='utf-8') as file:
+with open("config.json", "r", encoding='utf-8') as file: # 如果是定时任务，需要把config.json设置绝对路径
     config_data = json.load(file)
 
 # Extract values from the config data
