@@ -1,13 +1,13 @@
 import json
 import time
 import requests
-from lxml import etree
+import subprocess
 
-# Read configuration from a local file
-with open("config.json", "r", encoding='utf-8') as file: # 如果是定时任务，需要把config.json设置绝对路径
+# 从本地文件读取配置
+with open("/root/CFautoip/config.json", "r", encoding='utf-8') as file:
     config_data = json.load(file)
 
-# Extract values from the config data
+# 从配置数据中提取值
 auth_email = config_data["auth_email"]
 auth_key = config_data["auth_key"]
 zone_name = config_data["zone_name"]
@@ -16,37 +16,10 @@ set_url_config = config_data["set_url_config"]
 record_count = config_data["record_count"]  # 从配置文件中读取record_count的值
 record_type = config_data["record_type"]
 
-def hostmonit():
-    print('抓取 https://api.hostmonit.com/get_optimization_ip')
-    resp = requests.post('https://api.hostmonit.com/get_optimization_ip', data=json.dumps({'key': 'iDetkOys'})).json()
-    ip_list = []
-
-    # 重新排序  CM->CU->CT
-    cm_list = []
-    cu_list = []
-    ct_list = []
-
-    for item in resp["info"]:
-        if item["line"] == "CM":
-            cm_list.append(item["ip"])
-        elif item["line"] == "CU":
-            cu_list.append(item["ip"])
-        elif item["line"] == "CT":
-            ct_list.append(item["ip"])
-
-    for i in range(5):
-        ip_list.append(cm_list[i])
-        ip_list.append(cu_list[i])
-        ip_list.append(ct_list[i])
-
-    print(ip_list)
-    return ip_list
-
 def fastwork():
     print('从 https://api.ipify.org 获取公共 IP 地址')
-    resp = requests.get('https://api.ipify.org?format=json')
-    ip_data = resp.json()
-    ip_list = [ip_data["ip"]]
+    ip_data = subprocess.check_output(['curl', 'https://api.ipify.org?format=json']).decode('utf-8')
+    ip_list = [json.loads(ip_data)["ip"]]
     print(ip_list)
     return ip_list
 
@@ -84,9 +57,7 @@ def create_dns_record(zone_identifier, record_name_with_count, ip_address):
     return result
 
 if __name__ == '__main__':
-    if set_url_config == 1:
-        ip_list = hostmonit()
-    elif set_url_config == 2:
+    if set_url_config == 2:
         ip_list = fastwork()
     else:
         raise RuntimeError('请输入正确set_url_config配置')
@@ -96,7 +67,8 @@ if __name__ == '__main__':
 
     print(f"你的IP地址是：{public_ip}")
     print("欢迎关注telegram：https://t.me/notetoday")
-    response = requests.get(f"https://api.cloudflare.com/client/v4/zones?name={zone_name}", headers={        "X-Auth-Email": auth_email,
+    response = requests.get(f"https://api.cloudflare.com/client/v4/zones?name={zone_name}", headers={
+        "X-Auth-Email": auth_email,
         "X-Auth-Key": auth_key,
         "Content-Type": "application/json"
     })
